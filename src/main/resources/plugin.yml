@@ -1,0 +1,8 @@
+name: AltChecker
+authors: [bobcatsss, brainsynder]
+version: 2.0
+depends: [SimpleAPI]
+main: bobcatsss.altchecker.Main
+commands:
+   alts:
+      description: Reload config.
