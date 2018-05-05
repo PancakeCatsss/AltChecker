@@ -39,10 +39,10 @@ public class UserData {
         this.compound = compound;
         if (compound.hasKey("name")) name = compound.getString("name");
         if (compound.hasKey("uuid")) uuid = compound.getString("uuid");
-        if (compound.hasKey("lastIP")) lastKnownIP = Encrypter.getDecrypted(compound.getString("lastIP"));
+        if (compound.hasKey("lastIP")) lastKnownIP = Base64Wrapper.decodeString(compound.getString("lastIP"));
         if (compound.hasKey("ips")) {
             try {
-                JSONArray array = (JSONArray) JSONValue.parseWithException(Encrypter.getDecrypted(Base64Wrapper.decodeString(compound.getString("ips"))));
+                JSONArray array = (JSONArray) JSONValue.parseWithException(Base64Wrapper.decodeString(compound.getString("ips")));
                 array.forEach(o -> knownIps.add(String.valueOf(o)));
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -54,10 +54,10 @@ public class UserData {
             StorageTagCompound compound = new StorageTagCompound();
             compound.setString("name", name);
             compound.setString("uuid", uuid);
-            compound.setString("lastIP", Encrypter.getEncrypted(lastKnownIP));
+            compound.setString("lastIP", Base64Wrapper.encodeString(lastKnownIP));
             JSONArray array = new JSONArray();
             array.addAll(knownIps);
-            compound.setString("ips", Encrypter.getEncrypted(Base64Wrapper.encodeString(array.toJSONString())));
+            compound.setString("ips", Base64Wrapper.encodeString(array.toJSONString()));
             return compound;
         }catch (Exception e){
             return compound;
@@ -83,10 +83,10 @@ public class UserData {
     public void setLastKnownIP(String lastKnownIP) {
         if (!knownIps.contains(lastKnownIP)) knownIps.add(lastKnownIP);
         this.lastKnownIP = lastKnownIP;
-        compound.setString("lastIP", Encrypter.getEncrypted(lastKnownIP));
+        compound.setString("lastIP", Base64Wrapper.encodeString(lastKnownIP));
         JSONArray array = new JSONArray();
         array.addAll(knownIps);
-        compound.setString("ips", Encrypter.getEncrypted(Base64Wrapper.encodeString(array.toJSONString())));
+        compound.setString("ips", Base64Wrapper.encodeString(array.toJSONString()));
 
     }
     public void setName(String name) {
